@@ -3,10 +3,11 @@ app.transaction(
     -- TODO All these should be options in a dialog
     local spacing = 7
     local brushSize = 1
-    local slope = -3
-    local color = Color{ r=0, g=255, b=0 }
+    local slope = 2
+    local color = Color{ r=255, g=0, b=0 }
     local isContinuous = true
     local opacity = 255/2
+    local reverse = true
 
     local sprite = app.activeSprite
     local layer = sprite:newLayer()
@@ -31,15 +32,15 @@ app.transaction(
 
     -- Instead of drawing each line individually I can "scan" each line
     -- in the image and draw individual pixels with the correct displacement and overflow
-
-    -- TODO: For complete isometric do it again but in reverse, with another color
     local x = 0
     local size = scanXSize
     for y=bottom, 0, -1 do
 
       while x < sprite.width do
+        local xt = not reverse and x or sprite.width - x -1
+
         if size > 0 then
-          app.activeImage:putPixel(x, y, color)
+          app.activeImage:putPixel(xt, y, color)
           x = x + 1
           size = size - 1
         else 
